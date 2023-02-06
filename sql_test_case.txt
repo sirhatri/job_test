@@ -1,0 +1,43 @@
+You need to create 3 a bit different queries, but all of them need to select 5 fields: product_name gift_name, product_img_url, product_url, product_price_min, and product_short_description.
+
+The first query has to return all products connected with the sub_category “Jewelry”.
+
+QUERY 1
+
+SELECT product_name gift_name, product_img_url, product_url, product_price_min, product_short_description FROM grommet_products
+INNER JOIN grommet_product_categories
+ON grommet_products.id = grommet_product_categories.product_id
+INNER JOIN grommet_gifts_categories
+ON grommet_product_categories.product_category_id = grommet_gifts_categories.id
+WHERE grommet_gifts_categories.sub_category = 'Jewelry' AND is_sold_out = 0;
+
+
+The second query has to return all products connected with the keyword “Hair accessor”.
+
+QUERY 2
+
+SELECT product_name gift_name, product_img_url, product_url, product_price_min, product_short_description FROM grommet_products
+INNER JOIN grommet_product_to_keyword
+ON grommet_products.id = grommet_product_to_keyword.product_id
+INNER JOIN grommet_product_keywords
+ON grommet_product_to_keyword.keyword_id = grommet_product_keywords.id
+WHERE grommet_product_keywords.keyword = 'Hair accessor' AND is_sold_out = 0;
+
+The third query has to return all products connected either with sub_categories “Beauty & Personal Care” and “Skincare” (any of them!) or with the keyword “Aromatherapy”.
+
+QUERY 3
+
+SELECT distinct(product_name) gift_name, product_img_url, product_url, product_price_min, product_short_description FROM grommet_products
+INNER JOIN grommet_product_categories
+ON grommet_products.id = grommet_product_categories.product_id
+INNER JOIN grommet_gifts_categories
+ON grommet_product_categories.product_category_id = grommet_gifts_categories.id
+INNER JOIN grommet_product_to_keyword 
+ON grommet_products.id = grommet_product_to_keyword.product_id
+INNER JOIN grommet_product_keywords
+ON grommet_product_to_keyword.keyword_id = grommet_product_keywords.id
+WHERE (grommet_gifts_categories.sub_category REGEXP '(Beauty & Personal Care|Skincare)' OR grommet_product_keywords.keyword = 'Aromatherapy') AND is_sold_out = 0
+;
+
+
+

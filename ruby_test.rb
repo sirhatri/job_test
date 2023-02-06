@@ -8,14 +8,15 @@ browser = Mechanize.new {|agent|
 
 page = browser.get("https://agriculture.house.gov/news/documentsingle.aspx?DocumentID=2106")
 title = page.xpath("//h2[@class='newsie-titler']/text()")
-date_location = page.xpath("//div[@class='topnewstext']/b").text.split(',')
-location = date_location.first.strip
-date = DateTime.parse(date_location[2..-1].join).strftime('%m-&d-&Y')
+location_and_date = page.xpath("//div[@class='topnewstext']/b/text()").to_s
+location = location_and_date.split(',').shift.strip
+date = location_and_date.split(',')[2..-1].join
+parsed_date = DateTime.parse(date).strftime('%m-%d-%Y')
 article = page.xpath("//div[@class='main-newscopy']").text
 
 result = {
   :title => title,
-  :date => date,
+  :date => parsed_date,
   :location => location,
   :article => article
 }

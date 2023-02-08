@@ -7,8 +7,8 @@ INNER JOIN grommet_product_to_keyword
 ON grommet_products.id = grommet_product_to_keyword.product_id
 INNER JOIN grommet_product_keywords
 ON grommet_product_to_keyword.keyword_id = grommet_product_keywords.id
-WHERE grommet_gifts_categories.sub_category
-IN ("Beauty & Personal Care", "Skincare")
+WHERE grommet_gifts_categories.sub_category = 'Beauty & Personal Care'
+AND grommet_gifts_categories.sub_category = 'Skincare'
 OR grommet_product_keywords.keyword = 'Aromatherapy'
 AND is_sold_out = 0
 ;
